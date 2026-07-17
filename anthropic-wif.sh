@@ -70,6 +70,7 @@ ask() { # ask VAR "Question" ["default"]
   read -r __ans
   printf -v "$__var" '%s' "${__ans:-$__def}"
 }
+lc() { printf '%s' "$1" | tr '[:upper:]' '[:lower:]'; }
 
 # ── Defaults ──────────────────────────────────────────────────────────────────
 CHECK_IMAGE="${CHECK_IMAGE:-curlimages/curl:8.11.0}"
@@ -203,7 +204,8 @@ if [[ -z "$DO_CONTAINER" ]]; then
   prompt "Deploy the verification container now? [y/N]:"; read -r DO_CONTAINER
 fi
 
-if [[ "${DO_CONTAINER,,}" == "true" || "${DO_CONTAINER,,}" == "y" || "${DO_CONTAINER,,}" == "yes" ]]; then
+DO_CONTAINER_LC="$(lc "$DO_CONTAINER")"
+if [[ "$DO_CONTAINER_LC" == "true" || "$DO_CONTAINER_LC" == "y" || "$DO_CONTAINER_LC" == "yes" ]]; then
   ask FDRL_ID "Federation rule id (fdrl_...)"
   ask ORG_ID  "Anthropic organization id"
   ask SVAC_ID "Service account id (svac_...)"
