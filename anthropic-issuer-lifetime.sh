@@ -140,7 +140,8 @@ echo -e "  New lifetime: ${BOLD}${LIFETIME}${NC} seconds"
 echo ""
 echo -en "${BOLD}Send the update now? [y/N]: ${NC}"
 read -r CONFIRM
-[[ "${CONFIRM,,}" != "y" && "${CONFIRM,,}" != "yes" ]] && { warn "Aborted — nothing changed."; exit 0; }
+CONFIRM_LC="$(printf '%s' "$CONFIRM" | tr '[:upper:]' '[:lower:]')"
+[[ "$CONFIRM_LC" != "y" && "$CONFIRM_LC" != "yes" ]] && { warn "Aborted — nothing changed."; exit 0; }
 
 heading "Updating issuer"
 HTTP_BODY="$(curl -sS -w $'\n%{http_code}' -X POST "${API}/${ORG_ID}/federation_issuers/${FDIS_ID}" \
